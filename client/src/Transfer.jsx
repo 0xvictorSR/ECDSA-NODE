@@ -1,11 +1,16 @@
 import { useState } from "react";
 import server from "./server";
+import axios from 'axios';
 
 function Transfer({ address, setBalance }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [signature, setSignature] = useState("");
+  const [recoveryBit, setRecoveryBit] = useState("");
+  const [publicKey, setPublicKey] = useState("");
+  const [messageHash, setMessageHash] = useState("");
 
-  const setValue = (setter) => (evt) => setter(evt.target.value);
+  const setValue = (setter) => (evt) => {setter(evt.target.value);}
 
   async function transfer(evt) {
     evt.preventDefault();
@@ -16,7 +21,7 @@ function Transfer({ address, setBalance }) {
       } = await server.post(`send`, {
         sender: address,
         amount: parseInt(sendAmount),
-        recipient,
+        recipient
       });
       setBalance(balance);
     } catch (ex) {
